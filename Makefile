@@ -1,6 +1,6 @@
 client:
-	g++  Client/Client.cpp Client/main.cpp -o client
+	g++  Client/Client.cpp Client/main.cpp -o bin/client
 server:
-	g++ Server/Server.cpp Server/main.cpp -o server
+	g++ Server/Server.cpp Server/main.cpp -o bin/server
 clean:
-	rm -rf client server
+	rm -rf bin/client bin/server
