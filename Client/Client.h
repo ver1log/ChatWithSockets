@@ -29,7 +29,7 @@ public:
     ssize_t sendMessage(std::string);
     void reciveMessage();
     char* getBuffer();
-    void endClient(){
+    ~Client(){
         close(socketFileDiscriptor);
     }
 };

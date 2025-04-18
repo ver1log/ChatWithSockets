@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Server.h"
 
+
 int main(int argc, char* argv[]){
     if(argc < 3){
         std::cerr<< "Not enough arguments passed in\n";
@@ -21,24 +22,16 @@ int main(int argc, char* argv[]){
 
     std:: cout << "server listening\n";
 
-    struct sockaddr_in clientAddress;
-    if(!s.acceptClientConnection(clientAddress)){
-        std::cerr << "Server could not accept incoming client";
-        return -1;
-    }
-
-    std:: cout << "server accpeting clients\n";
-    
-    
     while(true){
-        ssize_t amountRecieved = s.reciveMessage();
-        if(amountRecieved > 0)
-            std::cout << s.getConnectedClientFileDiscriptor() << ": " << s.getBuffer() << std::endl;
-        if(amountRecieved < 0)
-            break;
+        struct sockaddr_in clientAddress;
+        AcceptedSocket* client = s.acceptClientConnection(clientAddress);
+        //will not add a socket to list if the client could not be connected
+        if(!s.addAcceptedSocketToList(client)){
+            std::cerr << "Server could not accept incomming socket: " << client->acceptedSocketFD << std::endl; 
+            return -1;
+        }
+        s.printAcceptedClientOnNewThread();
     }
 
-
-    s.endServer();
     return 0;
 }

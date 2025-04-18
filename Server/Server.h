@@ -8,13 +8,22 @@
 #include <cstring>
 #include <unistd.h>
 #include <map>
+#include <vector>
+#include <thread>
+
+struct AcceptedSocket{
+    int acceptedSocketFD;
+    struct sockaddr_in address;
+    int error;
+    bool acceptedSuccesfully;
+};
 
 class Server{
 private:
     int serverFileDiscriptor;
     int bindingStatus;
     int clientFileDiscriptor;
-    std::map<int, std::string> FDtoName;
+    std::vector<AcceptedSocket *> acceptedClientSockets;
 public:
     char buffer[1024];
     Server(std::string passedIP, int port){
@@ -29,13 +38,19 @@ public:
     }
     bool initServer();
     bool beginListening();
-    bool acceptClientConnection(struct sockaddr_in);
+    AcceptedSocket* acceptClientConnection(struct sockaddr_in &);
     int getConnectedClientFileDiscriptor();
     ssize_t reciveMessage();
     std::string getBuffer();
-    void endServer(){
+    void printAcceptedClient();
+    void printAcceptedClientOnNewThread();
+    bool addAcceptedSocketToList(AcceptedSocket*);
+    ~Server(){
         close(clientFileDiscriptor);
         shutdown(serverFileDiscriptor, SHUT_RDWR);
+        for(int i = 0; i < acceptedClientSockets.size(); i++){
+            delete acceptedClientSockets[i];
+        }
     }
 };
 
