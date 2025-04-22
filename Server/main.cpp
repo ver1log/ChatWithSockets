@@ -30,7 +30,9 @@ int main(int argc, char* argv[]){
             std::cerr << "Server could not accept incomming socket: " << client->acceptedSocketFD << std::endl; 
             return -1;
         }
-        s.printAcceptedClientOnNewThread();
+        s.printAcceptedClientOnNewThread(client);
+        //std::cout << std::endl;
+        std::cout << "Threads: " << s.threadCountRet() << std::endl;
     }
 
     return 0;

@@ -7,6 +7,7 @@
 #include <string>
 #include <cstring>
 #include <unistd.h>
+#include <thread>
 
 
 class Client{
@@ -14,6 +15,8 @@ private:
     int connectionStatus;
     int socketFileDiscriptor;
     char buffer[1024];
+    char readingbuffer[1024];
+    char writingbuffer[1024];
 public:
     Client(){
         socketFileDiscriptor = socket(AF_INET,SOCK_STREAM, 0);
@@ -29,6 +32,7 @@ public:
     ssize_t sendMessage(std::string);
     void reciveMessage();
     char* getBuffer();
+    void reciveMessageAndPrintOnNewThread();
     ~Client(){
         close(socketFileDiscriptor);
     }

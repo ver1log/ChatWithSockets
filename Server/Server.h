@@ -15,7 +15,8 @@ struct AcceptedSocket{
     int acceptedSocketFD;
     struct sockaddr_in address;
     int error;
-    bool acceptedSuccesfully;
+    bool isConnected;
+    char buffer[1024];
 };
 
 class Server{
@@ -24,8 +25,9 @@ private:
     int bindingStatus;
     int clientFileDiscriptor;
     std::vector<AcceptedSocket *> acceptedClientSockets;
+    int threadcount = 0;
 public:
-    char buffer[1024];
+    //char buffer[1024];
     Server(std::string passedIP, int port){
         serverFileDiscriptor = socket(AF_INET,SOCK_STREAM, 0);
         std::string ip = passedIP;
@@ -39,14 +41,17 @@ public:
     bool initServer();
     bool beginListening();
     AcceptedSocket* acceptClientConnection(struct sockaddr_in &);
-    int getConnectedClientFileDiscriptor();
-    ssize_t reciveMessage();
+    //void reciveMessageAndRelay();
     std::string getBuffer();
-    void printAcceptedClient();
-    void printAcceptedClientOnNewThread();
+    void printIncomingSocket(int senderFD);
+    void printAcceptedClientOnNewThread(AcceptedSocket *);
     bool addAcceptedSocketToList(AcceptedSocket*);
+    void sendMessageToOtherThreads(int senderFD, char message[],int messageSize);
+    bool isAnyClientConnected();
+    int threadCountRet();
+    void receiveAndPrintIncomingData(int clientFD);
     ~Server(){
-        close(clientFileDiscriptor);
+        //close(clientFileDiscriptor);
         shutdown(serverFileDiscriptor, SHUT_RDWR);
         for(int i = 0; i < acceptedClientSockets.size(); i++){
             delete acceptedClientSockets[i];
