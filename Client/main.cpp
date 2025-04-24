@@ -9,10 +9,12 @@ int main()
         std::cerr << "Error connecting to server";
         return -1;
     }
-
+    c.reciveMessageAndPrintOnNewThread();
+    
     std::cout << "Type in an input so we can send it to the server(type exit)\n";
     std::string line;
     ssize_t received;
+    
     while (true)
     {
         std::getline(std::cin, line);
@@ -23,13 +25,16 @@ int main()
                 break;
             }
             received = c.sendMessage(line);
+            /*
             if (received == -1)
             {
                 std::cerr << "server socket has been closed";
                 return -1;
             }
+            */
         }
-        c.reciveMessageAndPrintOnNewThread();
+        
+        
     }
     
     return 0;

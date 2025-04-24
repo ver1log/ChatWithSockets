@@ -33,6 +33,8 @@ public:
     void reciveMessage();
     char* getBuffer();
     void reciveMessageAndPrintOnNewThread();
+    void startListeningAndPrintMessagesOnNewThread();
+    void listenAndPrint();
     ~Client(){
         close(socketFileDiscriptor);
     }

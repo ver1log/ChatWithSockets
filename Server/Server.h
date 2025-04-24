@@ -46,7 +46,7 @@ public:
     void printIncomingSocket(int senderFD);
     void printAcceptedClientOnNewThread(AcceptedSocket *);
     bool addAcceptedSocketToList(AcceptedSocket*);
-    void sendMessageToOtherThreads(int senderFD, char message[],int messageSize);
+    void sendMessageToOtherThreads(int senderFD, char *message,int messageSize);
     bool isAnyClientConnected();
     int threadCountRet();
     void receiveAndPrintIncomingData(int clientFD);

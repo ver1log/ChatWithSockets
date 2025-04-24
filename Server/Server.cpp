@@ -120,73 +120,23 @@ void Server::printIncomingSocket(int senderFD)
     }
     std::cout << acceptedClientSockets[index]->acceptedSocketFD << ": " << acceptedClientSockets[index]->buffer << std::endl;
 }
-/*
-void Server::printAcceptedClientOnNewThread()
-{
-    std::thread t(&Server::reciveMessageAndRelay, this);
-    t.detach();
-    threadcount++;
-}
-*/
 
-/*
-void Server::sendMessageToOtherThreads(int senderFD, int messageSize)
+void Server::sendMessageToOtherThreads(int senderFD, char *message, int messageSize)
 {
-    char sentMessage[1024];
+    //char sentMessage[1024];
+    std::cout << "Message: " << message << std::endl;
     for (int i = 0; i < acceptedClientSockets.size(); i++)
     {
-        if (acceptedClientSockets[i]->acceptedSocketFD == senderFD)
-        {
-            memcpy(sentMessage, acceptedClientSockets[i]->buffer, messageSize);
-        }
-    }
-    for (int i = 0; i < acceptedClientSockets.size(); i++)
-    {
-        /*
-        int currentSendingClientFD = acceptedClientSockets[i]->acceptedSocketFD;
-        std::string currentMessage = getBuffer();
-        std::cout << currentMessage.length();
-        std::string sentMessage = std::to_string(currentSendingClientFD) + ": " + currentMessage;
-        std::cout << sentMessage << std::endl;
-        for(AcceptedSocket *e: acceptedClientSockets){
-            std::cout << e->acceptedSocketFD << std::endl;
-        }
         
         if (senderFD != acceptedClientSockets[i]->acceptedSocketFD)
         {
-            ssize_t amountSent = send(acceptedClientSockets[i]->acceptedSocketFD, sentMessage, strlen(sentMessage), 0);
-        }
-    }
-}
-*/
-void Server::sendMessageToOtherThreads(int senderFD, char message[], int messageSize)
-{
-    //char sentMessage[1024];
-    for (int i = 0; i < acceptedClientSockets.size(); i++)
-    {
-        if (acceptedClientSockets[i]->acceptedSocketFD == senderFD)
-        {
-            memcpy(message, acceptedClientSockets[i]->buffer, messageSize);
-        }
-    }
-    for (int i = 0; i < acceptedClientSockets.size(); i++)
-    {
-        /*
-        int currentSendingClientFD = acceptedClientSockets[i]->acceptedSocketFD;
-        std::string currentMessage = getBuffer();
-        std::cout << currentMessage.length();
-        std::string sentMessage = std::to_string(currentSendingClientFD) + ": " + currentMessage;
-        std::cout << sentMessage << std::endl;
-        for(AcceptedSocket *e: acceptedClientSockets){
-            std::cout << e->acceptedSocketFD << std::endl;
-        }
-        */
-        if (senderFD != acceptedClientSockets[i]->acceptedSocketFD)
-        {
+            std::cout << "FD to be sent to : " << acceptedClientSockets[i]->acceptedSocketFD << std::endl;
             ssize_t amountSent = send(acceptedClientSockets[i]->acceptedSocketFD, message, strlen(message), 0);
+            std::cout << "Amount that was sent: " << amountSent << std::endl;
         }
     }
 }
+
 
 bool Server::isAnyClientConnected()
 {

@@ -20,15 +20,15 @@ ssize_t Client::sendMessage(std::string line)
     return amountSent;
 }
 
+
 void Client::reciveMessage()
 {
     memset(buffer, 0, sizeof(buffer));
     while (true)
     {
-
         ssize_t amountRecieved = recv(socketFileDiscriptor, buffer, 1024, 0);
         if (amountRecieved > 0)
-            std::cout << getBuffer();
+            std::cout << buffer << std::endl;
         else if (amountRecieved == 0)
             break;
     }
