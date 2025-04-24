@@ -4,7 +4,7 @@ bool Client::connectToServer()
 {
     if (connectionStatus == 0)
     {
-        std::cout << "inside connectTOsever\n";
+        //std::cout << "inside connectTOsever\n";
         return true;
     }
     else
@@ -23,9 +23,11 @@ ssize_t Client::sendMessage(std::string line)
 
 void Client::reciveMessage()
 {
-    memset(buffer, 0, sizeof(buffer));
+    //memset(buffer, 0, sizeof(buffer));
+    char buffer[1024];
     while (true)
     {
+        memset(buffer, 0, sizeof(buffer));
         ssize_t amountRecieved = recv(socketFileDiscriptor, buffer, 1024, 0);
         if (amountRecieved > 0)
             std::cout << buffer << std::endl;
@@ -40,7 +42,10 @@ void Client::reciveMessageAndPrintOnNewThread()
     t.detach();
 }
 
-char *Client::getBuffer()
-{
-    return buffer;
+void Client::setName(std::string name ){
+    this->name = name;
+}
+
+std::string Client::getName(){
+    return name;
 }

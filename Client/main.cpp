@@ -10,13 +10,19 @@ int main()
         return -1;
     }
     c.reciveMessageAndPrintOnNewThread();
+    std::string name;
+    std::cout << "Enter the name for this client: ";
+    std::cin >> name;
+    c.setName(name);
+    std::cout << std::endl;
     
-    std::cout << "Type in an input so we can send it to the server(type exit)\n";
+    std::cout << "Type in an input so we can send it to the server(type exit to end connection)\n";
     std::string line;
     ssize_t received;
     
     while (true)
     {
+        //std::cout << c.getName() + ": ";
         std::getline(std::cin, line);
         if (line.size() > 0)
         {
@@ -24,14 +30,8 @@ int main()
             {
                 break;
             }
-            received = c.sendMessage(line);
-            /*
-            if (received == -1)
-            {
-                std::cerr << "server socket has been closed";
-                return -1;
-            }
-            */
+            std::string fullMessage = c.getName() + ": " + line;
+            received = c.sendMessage(fullMessage);
         }
         
         

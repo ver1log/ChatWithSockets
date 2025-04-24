@@ -14,14 +14,12 @@ class Client{
 private:
     int connectionStatus;
     int socketFileDiscriptor;
-    char buffer[1024];
-    char readingbuffer[1024];
-    char writingbuffer[1024];
+    std::string name;
 public:
     Client(){
         socketFileDiscriptor = socket(AF_INET,SOCK_STREAM, 0);
         std::string ip = "127.0.0.1";
-        std::cout << "file discriptor created\n";
+        //std::cout << "file discriptor created\n";
         struct sockaddr_in address;
         address.sin_family = AF_INET;
         address.sin_port =  htons(2000);
@@ -31,10 +29,11 @@ public:
     bool connectToServer();
     ssize_t sendMessage(std::string);
     void reciveMessage();
-    char* getBuffer();
     void reciveMessageAndPrintOnNewThread();
     void startListeningAndPrintMessagesOnNewThread();
     void listenAndPrint();
+    void setName(std::string);
+    std::string getName();
     ~Client(){
         close(socketFileDiscriptor);
     }
